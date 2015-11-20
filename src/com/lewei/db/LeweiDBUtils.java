@@ -6,39 +6,15 @@ import java.sql.SQLException;
 import java.sql.Statement;
 import java.util.Date;
 
-public class MySQLDBUtil {
+public class LeweiDBUtils {
 
-	// 威特
-	private static final String URL = "jdbc:mysql://172.21.2.216:3306/warning_light";
-
-	// 本机
-	// private static final String URL =
-	// "jdbc:mysql://127.0.0.1:3306/warning_light";
+	private static final String URL = "jdbc:mysql://180.76.131.21:3306/web_warning?useunicode=true&characterEncoding=utf8";
 
 	private static final String USER = "root";
 
-	private static final String PASSWORD = "";
+	private static final String PASSWORD = "888888";
 
 	private Connection conn = null;
-
-	// static {
-	// // 1.加载驱动（反射机制）
-	// try {
-	// Class.forName("com.mysql.jdbc.Driver");
-	// // 2.获得数据库连接
-	// conn = DriverManager.getConnection(URL, USER, PASSWORD);
-	//
-	// if(conn == null){
-	// System.out.println("the conn is closed!");
-	// }
-	// } catch (ClassNotFoundException e) {
-	// System.out.println("sorry,can't find the Driver!");
-	// e.printStackTrace();
-	// } catch (SQLException e) {
-	// System.out.println(conn);
-	// e.printStackTrace();
-	// }
-	// }
 
 	public Connection getConn() {
 		if (conn == null) {
@@ -46,12 +22,10 @@ public class MySQLDBUtil {
 				Class.forName("com.mysql.jdbc.Driver");
 				conn = DriverManager.getConnection(URL, USER, PASSWORD);
 			} catch (SQLException | ClassNotFoundException e) {
-				if (conn == null) {
-					Thread.sleep(10000);
-					System.out.println("Stop time : " + new Date());
+					Thread.sleep(60000);
+					System.out.println("leweiDB Stop time : " + new Date());
 					this.getConn();
 					System.out.println("conn :" + conn);
-				}
 				e.printStackTrace();
 			} finally {
 				return conn;
@@ -62,9 +36,11 @@ public class MySQLDBUtil {
 
 	public void main(String[] args) throws Exception {
 
+		Connection connection = new LeweiDBUtils().getConn();
+		Statement statement = connection.createStatement();
+		
 		System.out.println("-----------");
 		// 3.通过数据库的连接操作数据库（增删改查）
-		Statement statement = conn.createStatement();
 		System.out.println(conn + "----");
 		// 4.通过查询返回结果
 		// ResultSet rs = statement.executeQuery("select * from user");
