@@ -24,22 +24,25 @@ import com.lewei.model.Warning;
 public class T {
 
 	public static void main(String[] args) throws ParseException {
-		
-		WarningLightDao wld = new WarningLightDao();
-		Warning w = new Warning();
-		w.setCustomerCode("AP;1");
-		w.setStatus(0);
-		w.setWarningHandler("产线班长");
-		w.setWarningSite("产线");
-		w.setWarningType("按灯警告");
-		try {
-			boolean b = wld.addWittturBtnWarningToLewei(w);
-			System.out.println(b);
-			b = wld.dealWittturBtnWarningToLewei("AP;1");
-			System.out.println(b);
-		} catch (SQLException e1) {
-			e1.printStackTrace();
-		}
+
+		List<String> list = new ArrayList<>();
+		System.out.println(list.size());
+
+		 WarningLightDao wld = new WarningLightDao();
+		 Warning w = new Warning();
+		 w.setCustomerCode("AP;1");
+		 w.setStatus(0);
+		 w.setWarningHandler("产线班长");
+		 w.setWarningSite("产线");
+		 w.setWarningType("按灯警告");
+		 try {
+		 boolean b = wld.addWittturBtnWarningToLewei(w);
+		 System.out.println(b);
+		 b = wld.dealWittturBtnWarningToLewei("AP;1");
+		 System.out.println(b);
+		 } catch (SQLException e1) {
+		 e1.printStackTrace();
+		 }
 
 		List<String> l = new ArrayList<>();
 		l.add("000000");

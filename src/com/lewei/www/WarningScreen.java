@@ -70,6 +70,11 @@ public class WarningScreen extends JFrame {
 	private static List<ChangeTime> changeTimeList = new ArrayList<>();
 	private static List<Takt> taktTimeList = new ArrayList<>();
 
+	/** 添加新预警信息 */
+	private static List<String> addInfoToLewei = new ArrayList<>();
+	/** 改变预警信息状态 */
+	private static List<String> dealInfoToLewei = new ArrayList<>();
+
 	private Clock clock;
 	private static long pauseTime = 0;
 	private static long lostTime = 0;
@@ -435,9 +440,14 @@ public class WarningScreen extends JFrame {
 		SwingWorker updateWork = updateWork();
 		updateWork.execute();
 
+		// 上传预警信息到乐维服务器
+		SwingWorker uploadInfo = uploadWarningInfoToLewei();
+		uploadInfo.execute();
+
 		// 短信邮件发送
 		// SwingWorker sendInfo = sendWarningInfo();
 		// sendInfo.execute();
+
 	}
 
 	/**
@@ -1051,11 +1061,12 @@ public class WarningScreen extends JFrame {
 						if (btn[2] == 1) {
 							p01.setBackground(new Color(255, 51, 0));
 							if (!red1) {
+								red1 = true;
 								// 警告记录存入数据库
 								if (rangerNum >= 0) {
 									addWarningInfo("AA;1");
+									addInfoToLewei.add("AA;1");
 								}
-								red1 = true;
 							}
 							isLost = true;
 						} else {
@@ -1063,7 +1074,7 @@ public class WarningScreen extends JFrame {
 								p01.setBackground(Color.DARK_GRAY);
 							}
 							if (red1) {
-								dealWittturBtnWarningToLewei("AA;1");
+								dealInfoToLewei.add("AA;1");
 							}
 							red1 = false;
 						}
@@ -1102,6 +1113,7 @@ public class WarningScreen extends JFrame {
 								// 警告记录存入数据库
 								if (rangerNum >= 0) {
 									addWarningInfo("AA;2");
+									addInfoToLewei.add("AA;2");
 								}
 							}
 							isLost = true;
@@ -1110,7 +1122,7 @@ public class WarningScreen extends JFrame {
 								p02.setBackground(Color.DARK_GRAY);
 							}
 							if (red2) {
-								dealWittturBtnWarningToLewei("AA;2");
+								dealInfoToLewei.add("AA;2");
 							}
 							red2 = false;
 						}
@@ -1157,6 +1169,7 @@ public class WarningScreen extends JFrame {
 								// 警告记录存入数据库
 								if (rangerNum >= 0) {
 									addWarningInfo("AA;3");
+									addInfoToLewei.add("AA;3");
 								}
 							}
 							isLost = true;
@@ -1165,7 +1178,7 @@ public class WarningScreen extends JFrame {
 								p03.setBackground(Color.DARK_GRAY);
 							}
 							if (red3) {
-								dealWittturBtnWarningToLewei("AA;3");
+								dealInfoToLewei.add("AA;3");
 							}
 							red3 = false;
 						}
@@ -1204,6 +1217,7 @@ public class WarningScreen extends JFrame {
 								// 警告记录存入数据库
 								if (rangerNum >= 0) {
 									addWarningInfo("AA;4");
+									addInfoToLewei.add("AA;4");
 								}
 							}
 							isLost = true;
@@ -1212,7 +1226,7 @@ public class WarningScreen extends JFrame {
 								p04.setBackground(Color.DARK_GRAY);
 							}
 							if (red4) {
-								dealWittturBtnWarningToLewei("AA;4");
+								dealInfoToLewei.add("AA;4");
 							}
 							red4 = false;
 						}
@@ -1259,6 +1273,7 @@ public class WarningScreen extends JFrame {
 								// 警告记录存入数据库
 								if (rangerNum >= 0) {
 									addWarningInfo("AA;5");
+									addInfoToLewei.add("AA;5");
 								}
 							}
 							isLost = true;
@@ -1267,7 +1282,7 @@ public class WarningScreen extends JFrame {
 								p05.setBackground(Color.DARK_GRAY);
 							}
 							if (red5) {
-								dealWittturBtnWarningToLewei("AA;5");
+								dealInfoToLewei.add("AA;5");
 							}
 							red5 = false;
 						}
@@ -1306,6 +1321,7 @@ public class WarningScreen extends JFrame {
 								// 警告记录存入数据库
 								if (rangerNum >= 0) {
 									addWarningInfo("AA;6");
+									addInfoToLewei.add("AA;6");
 								}
 							}
 							isLost = true;
@@ -1314,7 +1330,7 @@ public class WarningScreen extends JFrame {
 								p06.setBackground(Color.DARK_GRAY);
 							}
 							if (red6) {
-								dealWittturBtnWarningToLewei("AA;6");
+								dealInfoToLewei.add("AA;6");
 							}
 							red6 = false;
 						}
@@ -1361,6 +1377,7 @@ public class WarningScreen extends JFrame {
 								// 警告记录存入数据库
 								if (rangerNum >= 0) {
 									addWarningInfo("AA;7");
+									addInfoToLewei.add("AA;7");
 								}
 							}
 							isLost = true;
@@ -1369,7 +1386,7 @@ public class WarningScreen extends JFrame {
 								p07.setBackground(Color.DARK_GRAY);
 							}
 							if (red7) {
-								dealWittturBtnWarningToLewei("AA;7");
+								dealInfoToLewei.add("AA;7");
 							}
 							red7 = false;
 						}
@@ -1408,15 +1425,16 @@ public class WarningScreen extends JFrame {
 								// 警告记录存入数据库
 								if (rangerNum >= 0) {
 									addWarningInfo("AA;8");
+									addInfoToLewei.add("AA;8");
 								}
-							}
-							if (red8) {
-								dealWittturBtnWarningToLewei("AA;8");
 							}
 							isLost = true;
 						} else {
 							if (!yellow8 && !green8) {
 								p08.setBackground(Color.DARK_GRAY);
+							}
+							if (red8) {
+								dealInfoToLewei.add("AA;8");
 							}
 							red8 = false;
 						}
@@ -1459,18 +1477,6 @@ public class WarningScreen extends JFrame {
 			}
 
 			/**
-			 * 处理预警信息为已处理。
-			 */
-			private void dealWittturBtnWarningToLewei(String code) {
-				wld = new WarningLightDao();
-				try {
-					wld.dealWittturBtnWarningToLewei(code);
-				} catch (SQLException e) {
-					e.printStackTrace();
-				}
-			}
-
-			/**
 			 * 警告记录存入数据库
 			 * 
 			 * @param string
@@ -1484,15 +1490,6 @@ public class WarningScreen extends JFrame {
 					wld.insertWorkStation(TPLineID, string.split(";")[1]);
 					// 预警消息存入数据库
 					wld.addWarningInfo(remark);
-
-					// 传送到乐维服务器
-					Warning w = new Warning();
-					w.setCustomerCode(string);
-					w.setStatus(0);
-					w.setWarningHandler("产线班长");
-					w.setWarningSite("产线");
-					w.setWarningType("按灯警告");
-					wld.addWittturBtnWarningToLewei(w);
 				} catch (SQLException e) {
 					System.out.println("插入预警信息出错！");
 					e.printStackTrace();
@@ -1619,4 +1616,44 @@ public class WarningScreen extends JFrame {
 		return send;
 
 	}
+
+	/**
+	 * 预警信息上传到乐维服务器。
+	 * 
+	 * @return
+	 */
+	private SwingWorker uploadWarningInfoToLewei() {
+		SwingWorker sw = new SwingWorker<Void, Void>() {
+
+			@Override
+			protected Void doInBackground() throws Exception {
+				wld = new WarningLightDao();
+
+				while (true) {
+					if (addInfoToLewei.size() > 0) {
+						// 传送到乐维服务器
+						Warning w = new Warning();
+						w.setCustomerCode(addInfoToLewei.get(0));
+						w.setStatus(0);
+						w.setWarningHandler("产线班长");
+						w.setWarningSite("产线");
+						w.setWarningType("按灯警告");
+						wld.addWittturBtnWarningToLewei(w);
+						// 移除已处理的数据
+						addInfoToLewei.remove(0);
+					}
+
+					if (dealInfoToLewei.size() > 0) {
+						wld.dealWittturBtnWarningToLewei(dealInfoToLewei.get(0));
+						// 移除已处理数据
+						dealInfoToLewei.remove(0);
+					}
+
+					Thread.sleep(30000);
+				}
+			}
+		};
+		return sw;
+	}
+
 }
