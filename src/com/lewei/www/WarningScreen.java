@@ -441,8 +441,8 @@ public class WarningScreen extends JFrame {
 		updateWork.execute();
 
 		// 上传预警信息到乐维服务器
-		SwingWorker uploadInfo = uploadWarningInfoToLewei();
-		uploadInfo.execute();
+		// SwingWorker uploadInfo = uploadWarningInfoToLewei();
+		// uploadInfo.execute();
 
 		// 短信邮件发送
 		// SwingWorker sendInfo = sendWarningInfo();
@@ -914,7 +914,7 @@ public class WarningScreen extends JFrame {
 			protected String doInBackground() throws Exception {
 				wld = new WarningLightDao();
 				while (true) {
-					if (taktCount > 0) {
+					if (rangerNum >= 0) {
 						// if (rangerNum == 0) {
 						// realCount = wld.getRealNum_zao();
 						// } else if (rangerNum == 1) {
@@ -1489,7 +1489,7 @@ public class WarningScreen extends JFrame {
 					// 当前工位存入当前产线
 					wld.insertWorkStation(TPLineID, string.split(";")[1]);
 					// 预警消息存入数据库
-					wld.addWarningInfo(remark);
+					wld.addWarningInfo(remark, 0);// 数字是当前线别ID
 				} catch (SQLException e) {
 					System.out.println("插入预警信息出错！");
 					e.printStackTrace();
@@ -1628,9 +1628,9 @@ public class WarningScreen extends JFrame {
 			@Override
 			protected Void doInBackground() throws Exception {
 				wld = new WarningLightDao();
-
 				while (true) {
 					if (addInfoToLewei.size() > 0) {
+						System.out.println("come in");
 						// 传送到乐维服务器
 						Warning w = new Warning();
 						w.setCustomerCode(addInfoToLewei.get(0));
@@ -1649,7 +1649,7 @@ public class WarningScreen extends JFrame {
 						dealInfoToLewei.remove(0);
 					}
 
-					Thread.sleep(30000);
+					Thread.sleep(3000);
 				}
 			}
 		};
